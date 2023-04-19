@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "adalchemy"
+version = "0.1.0"
+description = "Use AI to generate marketing content. Kind of like Jasper"
+authors = ["Sean Saito"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^0.27.4"
+pandas = "1.5.3"
+jupyterlab = "^3.6.3"
+streamlit = "^1.21.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
