@@ -45,43 +45,13 @@ def display_selectable_grid(elements, element_type, num_columns=3):
 
     # return selected_element
 
-def add_logo_custom():
-    st.markdown(
-        """
-        <style>
-            [data-testid="stSidebarNav"] {
-                background-image: url(http://placekitten.com/200/200);
-                background-repeat: no-repeat;
-                padding-top: 120px;
-                background-position: 20px 20px;
-            }
-            [data-testid="stSidebarNav"]::before {
-                content: "My Company Name";
-                margin-left: 20px;
-                margin-top: 20px;
-                font-size: 30px;
-                position: relative;
-                top: 100px;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
 # Main Streamlit app
 def main():
     st.set_page_config(page_icon='assets/favicon.png',
                        page_title='AdAlchemy')
-    # Config
-    # Import CSS styles
-    # with open('assets/styles.css', encoding='utf8') as f:
-    #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-    st.session_state.clear()
 
     # Logo
     add_logo('./assets/finx_logo.png')
-    # add_logo_custom()
 
     # Sidebar
     st.sidebar.subheader("AdAlchemy")
@@ -89,8 +59,8 @@ def main():
         "Select the style for the AI-generated image:",
         ["Anime, Ghibli", "Photorealistic", "Futuristic, Sci-Fi"]
     )
-    num_image_options = st.sidebar.slider("Number of image options to generate:", min_value=1, max_value=10)
-    num_text_options = st.sidebar.slider("Number of text options to generate:", min_value=1, max_value=10)
+    num_image_options = st.sidebar.slider("Number of image options to generate:", min_value=1, max_value=10, value=6)
+    num_text_options = st.sidebar.slider("Number of text options to generate:", min_value=1, max_value=10, value=2)
     st.sidebar.info(f'''Logged in: **Sean Saito**''')
 
     ######
@@ -103,19 +73,21 @@ def main():
 
     # Input for the tags/components of the AI-generated image
     st.subheader("Describe the image (tags, components, style, etc.)")
+    tags = st.text_input("Add the tags", value="Spring, sunny, happy, shopping district in Tokyo like Harajuku")
 
-    tags = []
-    list_defaults = [
-        "Spring, sunny",
-        "Good weather, blue skies",
-        "Happy, lively atmosphere",
-        'Tokyo shopping district such as Harajuku',
-        "People walking around",
-    ]
-    for i in range(5):
-        tag = st.text_input(f"Tag {i + 1}:", key=f"tag{i + 1}", value=list_defaults[i])
-        if tag:
-            tags.append(tag)
+    #
+    # list_defaults = [
+    #     "Spring, sunny",
+    #     "Good weather, blue skies",
+    #     "Happy, lively atmosphere",
+    #     'Tokyo shopping district such as Harajuku',
+    #     "People walking around",
+    # ]
+    # list_tags = []
+    # dict_tags = {}
+    # for i in range(5):
+    #     tag = st.text_input(f"Tag {i + 1}:", key=f"tag{i + 1}")
+    #     dict_tags[i+1] = tag
 
     # Generate button
     generate_button = st.button("Generate")
@@ -123,10 +95,13 @@ def main():
     # Generate images and display them in a carousel
     images = []
     texts = []
-
+    print(tags)
     if generate_button:
+        # print(list_tag_fields)
         if topic and tags:
-            images = generate_images(topic, tags, image_style, num_image_options)
+            print(topic)
+            print(tags)
+            images = generate_images(topic, tags.split(','), image_style, num_image_options)
 
             # Generate text and display it in a carousel
             texts = generate_text(topic, num_text_options)
@@ -141,27 +116,27 @@ def main():
             # Download the finalized PDF
             st.subheader("Download:")
 
-    if images and texts:
-        st.text("WIP: still figuring out how to do dynamic selection in Streamlit, \n"
-                "so this will produce a PDF based on a random pair of image and text 😅")
-        selected_image = random.choice(images)
-        selected_text = random.choice(texts)
+        if images and texts:
+            st.text("WIP: still figuring out how to do dynamic selection in Streamlit, \n"
+                    "so this will produce a PDF based on a random pair of image and text 😅")
+            selected_image = random.choice(images)
+            selected_text = random.choice(texts)
 
-        pdf = create_pdf(selected_image, selected_text, topic)
+            pdf = create_pdf(selected_image, selected_text, topic)
 
-        # Save the PDF to a temporary file
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_pdf:
-            tmp_pdf.write(pdf)
-            tmp_pdf.flush()
+            # Save the PDF to a temporary file
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_pdf:
+                tmp_pdf.write(pdf)
+                tmp_pdf.flush()
 
-        with open(tmp_pdf.name, "rb") as file:
-            pdf_bytes = file.read()
-            st.download_button(
-                label="Download PDF",
-                data=pdf_bytes,
-                file_name=f"{topic}.pdf",
-                mime="application/pdf",
-            )
+            with open(tmp_pdf.name, "rb") as file:
+                pdf_bytes = file.read()
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf_bytes,
+                    file_name=f"{topic}.pdf",
+                    mime="application/pdf",
+                )
 
 
 if __name__ == "__main__":

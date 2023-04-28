@@ -13,8 +13,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Function to generate images using an AI image generation API (e.g. DALL-E)
 def generate_images(topic, tags, style, num_images) -> Optional[list[bytes]]:
-    if topic is None:
-        return None
     # Call the API with the topic, tags, and style as parameters
     # Here we should use the appropriate function to call the desired API
 
@@ -35,6 +33,7 @@ def generate_images(topic, tags, style, num_images) -> Optional[list[bytes]]:
         tags=", ".join(tags),
         style=style
     )
+    print(prompt)
 
     # Set up our initial generation parameters.
     answers = stability_api.generate(
