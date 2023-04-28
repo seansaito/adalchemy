@@ -130,22 +130,19 @@ def main():
 
             # Generate text and display it in a carousel
             texts = generate_text(topic, num_text_options)
-    else:
-        images = generate_images(None, None, None, None)
-        texts = generate_text(None, None)
 
-    st.subheader("Generated Images:")
-    display_selectable_grid(images, "image")
+            st.subheader("Generated Images:")
+            display_selectable_grid(images, "image")
 
-    # if texts:
-    st.subheader("Generated Texts:")
-    display_selectable_grid(texts, "text", num_columns=1)
+            # if texts:
+            st.subheader("Generated Texts:")
+            display_selectable_grid(texts, "text", num_columns=1)
 
-    # Download the finalized PDF
-    st.subheader("Download:")
+            # Download the finalized PDF
+            st.subheader("Download:")
 
     if images and texts:
-        st.text("WIP: still figuring out how to do dynamic selection in Streamlit, "
+        st.text("WIP: still figuring out how to do dynamic selection in Streamlit, \n"
                 "so this will produce a PDF based on a random pair of image and text 😅")
         selected_image = random.choice(images)
         selected_text = random.choice(texts)

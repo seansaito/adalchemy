@@ -12,7 +12,6 @@ os.environ['STABILITY_HOST'] = 'grpc.stability.ai:443'
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Function to generate images using an AI image generation API (e.g. DALL-E)
-# @st.cache_data
 def generate_images(topic, tags, style, num_images) -> Optional[list[bytes]]:
     if topic is None:
         return None
@@ -66,7 +65,6 @@ def generate_images(topic, tags, style, num_images) -> Optional[list[bytes]]:
 
 
 # Function to generate text using an AI text generation API (e.g. GPT-3)
-# @st.cache_data
 def generate_text(topic, num_texts) -> Optional[list[str]]:
     if topic is None:
         return None
