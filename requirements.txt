@@ -106,6 +106,7 @@ pycparser==2.21
 pydeck==0.8.0
 Pygments==2.15.1
 pymdown-extensions==9.11
+protobuf<4
 Pympler==1.0.1
 pyparsing==3.0.9
 pyrsistent==0.19.3
